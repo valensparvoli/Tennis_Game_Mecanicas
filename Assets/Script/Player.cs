@@ -34,27 +34,56 @@ public class Player : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
 
         //Nos permite manipular el aimtarget y los diferentes tiros que hacemos 
+
+        //R Flat
         if (Input.GetKeyDown(KeyCode.R))
         {
             hitting = true;
             currentShot = shotManager.Flat;
 
         }
-        else if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.R))
         {
             hitting = false;
-            currentShot = shotManager.Flat;
         }
+
+        //Space TopSpin
         if (Input.GetKeyDown(KeyCode.Space))
         {
             hitting = true;
             currentShot = shotManager.topSpin;
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             hitting = false;
-            currentShot = shotManager.topSpin;
+        }
 
+        //T flatServe
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            hitting = true;
+            currentShot = shotManager.flatServe;
+            GetComponent<BoxCollider>().enabled = false;
+            animator.Play("Serve-prepare");
+        }
+
+        //Y kickServe
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            hitting = true;
+            currentShot = shotManager.kickServe;
+            animator.Play("Serve-prepare");
+        }
+
+        // T e Y service ejecucion 
+        if (Input.GetKeyUp(KeyCode.Y) || Input.GetKeyUp(KeyCode.T))
+        {
+            hitting = false;
+            GetComponent<BoxCollider>().enabled = true;
+            ball.transform.position = transform.position + new Vector3(0.2f, 1, 0);
+            Vector3 dir = aimTarget.position - transform.position;
+            ball.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0, currentShot.upForce, 0);
+            animator.Play("Serve");
         }
 
 
@@ -62,13 +91,13 @@ public class Player : MonoBehaviour
         //Mueve el aimtarget
         if (hitting)
         {
-            aimTarget.Translate(new Vector3(h, 0, v) * targetSpeed * Time.deltaTime);
+            aimTarget.Translate(new Vector3(h, 0, 0) * targetSpeed * Time.deltaTime);
         }
 
         //Encargado del movimiento del personaje y de cambiar entre movernos o mover el aimtarget
         if((h!=0 || v != 0) && !hitting)
         {
-            transform.Translate(new Vector3(h, 0, v)*speed*Time.deltaTime);
+            transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
         }
         //Debug.DrawRay(transform.position, ballDir);
 
