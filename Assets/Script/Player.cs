@@ -19,6 +19,11 @@ public class Player : MonoBehaviour
     ShotManager shotManager;
     Shot currentShot;
 
+    [SerializeField] Transform serveRight;
+    [SerializeField] Transform serveLeft;
+
+    bool servedRight = true;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -84,6 +89,8 @@ public class Player : MonoBehaviour
             Vector3 dir = aimTarget.position - transform.position;
             ball.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0, currentShot.upForce, 0);
             animator.Play("Serve");
+            ball.GetComponent<Ball>().hitter = "Player";
+            ball.GetComponent<Ball>().playing = true;
         }
 
 
@@ -124,8 +131,24 @@ public class Player : MonoBehaviour
                 animator.Play("BackHand");
             }
 
+            ball.GetComponent<Ball>().hitter = "Player";
+
             aimTarget.position = aimTargetInitialPosition;
         }
     }
 
+    public void Reset()
+    {
+        
+        if (servedRight)
+        {
+            transform.position = serveLeft.position;
+        }
+        else
+        {
+            transform.position = serveRight.position;
+        }
+
+        servedRight = !servedRight;
+    }
 }

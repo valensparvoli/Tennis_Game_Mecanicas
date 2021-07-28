@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bot : MonoBehaviour
 {
-    float speed=50f;
-    float force = 13f;
+    public float speed=50f;
+    //float force = 13f;
     Animator animator;
     public Transform ball;
     public Transform aimTargetBot;
@@ -76,7 +76,7 @@ public class Bot : MonoBehaviour
                 animator.Play("BackHand");
             }
 
-
+            ball.GetComponent<Ball>().hitter = "Bot";
         }
     }
 }
