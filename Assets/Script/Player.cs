@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Transform aimTarget;
     public Transform ball;
     public float speed;
-    float targetSpeed = 5f;
+    public float targetSpeed = 7f;
     //float force = 13f;
 
     bool hitting;
@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     [SerializeField] Transform serveLeft;
 
     bool servedRight = true;
+
+    public TimeManager timeManager;
 
     private void Start()
     {
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour
         {
             hitting = true;
             currentShot = shotManager.Flat;
+            timeManager.DoSlowMotion();
 
         }
         if (Input.GetKeyUp(KeyCode.R))
@@ -57,6 +60,7 @@ public class Player : MonoBehaviour
         {
             hitting = true;
             currentShot = shotManager.topSpin;
+            timeManager.DoSlowMotion();
         }
         if (Input.GetKeyUp(KeyCode.Space))
         {
@@ -107,6 +111,9 @@ public class Player : MonoBehaviour
             transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
         }
         //Debug.DrawRay(transform.position, ballDir);
+
+
+
 
     }
 

@@ -1038,8 +1038,10 @@ MonoBehaviour:
   aimTarget: {fileID: 1550223865}
   ball: {fileID: 1515758519}
   speed: 4
+  targetSpeed: 5
   serveRight: {fileID: 1569919187}
   serveLeft: {fileID: 2146160680}
+  timeManager: {fileID: 1615197916}
 --- !u!65 &430160760
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2336,9 +2338,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitter: 
-  playing: 1
+  playerScore: 0
+  botScore: 0
   playerScoreUI: {fileID: 1253812531}
   botScoreUI: {fileID: 1282453879}
+  playing: 1
 --- !u!96 &1515758522
 TrailRenderer:
   serializedVersion: 2
@@ -2758,6 +2762,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 106483133}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1615197915
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1615197917}
+  - component: {fileID: 1615197916}
+  m_Layer: 0
+  m_Name: TimeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1615197916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615197915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dba5d32cc27fbc349878c7969a5b7c1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slowDownFactor: 0.05
+  slowDownLength: 2
+--- !u!4 &1615197917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1615197915}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.1888485, y: -29.106155, z: 66.353485}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1678835648
 PrefabInstance:
