@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player2Script : MonoBehaviour
 {
     public Transform aimTarget;
     public Transform ball;
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
         aimTargetInitialPosition = aimTarget.position;
         shotManager = GetComponent<ShotManager>();
         currentShot = shotManager.topSpin;
+        ball.GetComponent<Ball>().Partida2Player = true;
     }
 
     // Update is called once per frame
@@ -40,37 +41,38 @@ public class Player : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
         //float v = Input.GetAxisRaw("Vertical");
 
-        MovePlayer1();
+
+        MovePlayer2();
 
         //Nos permite manipular el aimtarget y los diferentes tiros que hacemos 
 
         //R Flat
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             hitting = true;
             currentShot = shotManager.Flat;
             timeManager.DoSlowMotion();
 
         }
-        if (Input.GetKeyUp(KeyCode.R))
+        if (Input.GetKeyUp(KeyCode.I))
         {
             hitting = false;
         }
 
         //Space TopSpin
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.O))
         {
             hitting = true;
             currentShot = shotManager.topSpin;
             timeManager.DoSlowMotion();
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.O))
         {
             hitting = false;
         }
 
         //T flatServe
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             hitting = true;
             currentShot = shotManager.flatServe;
@@ -79,7 +81,7 @@ public class Player : MonoBehaviour
         }
 
         //Y kickServe
-        if (Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             hitting = true;
             currentShot = shotManager.kickServe;
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
         }
 
         // T e Y service ejecucion 
-        if (Input.GetKeyUp(KeyCode.Y) || Input.GetKeyUp(KeyCode.T))
+        if (Input.GetKeyUp(KeyCode.K) || Input.GetKeyUp(KeyCode.L))
         {
             hitting = false;
             GetComponent<BoxCollider>().enabled = true;
@@ -95,53 +97,51 @@ public class Player : MonoBehaviour
             Vector3 dir = aimTarget.position - transform.position;
             ball.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0, currentShot.upForce, 0);
             animator.Play("Serve");
-            ball.GetComponent<Ball>().hitter = "Player1";
+            ball.GetComponent<Ball>().hitter = "Player2";
             ball.GetComponent<Ball>().playing = true;
         }
 
 
-
-        //Mueve el aimtarget
         
+        //Mueve el aimtarget
         if (hitting)
         {
-            aimTarget.Translate(new Vector3(h, 0, 0) * targetSpeed * Time.deltaTime);
+            aimTarget.Translate(new Vector3(-h, 0, 0) * targetSpeed * Time.deltaTime);
         }
-        
 
-        //Encargado del movimiento del personaje y de cambiar entre movernos o mover el aimtarget
         /*
-        if((h!=0 || v != 0) && !hitting)
+        //Encargado del movimiento del personaje y de cambiar entre movernos o mover el aimtarget
+        if ((h != 0 || v != 0) && !hitting)
         {
             transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime);
         }
-        */
         //Debug.DrawRay(transform.position, ballDir);
+        */
+
 
 
     }
 
-    void MovePlayer1()
+    void MovePlayer2()
     {
         //Encargado del movimiento del personaje y de cambiar entre movernos o mover el aimtarget
-        if (Input.GetKey(KeyCode.W) && !hitting)
+
+        if (Input.GetKey(KeyCode.UpArrow) && !hitting)
         {
             transform.Translate(new Vector3(0, 0, Vector3.forward.z) * speed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.S) && !hitting)
+        if (Input.GetKey(KeyCode.DownArrow) && !hitting)
         {
             transform.Translate(new Vector3(0, 0, -Vector3.forward.z) * speed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.A) && !hitting)
+        if (Input.GetKey(KeyCode.LeftArrow) && !hitting)
         {
             transform.Translate(new Vector3(Vector3.left.x, 0, 0) * speed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.D) && !hitting)
+        if (Input.GetKey(KeyCode.RightArrow) && !hitting)
         {
             transform.Translate(new Vector3(Vector3.right.x, 0, 0) * speed * Time.deltaTime);
         }
-
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
         {
             //Calcula la direccion en la que se encuentra el aimtarget y envia la pelota hacia ese lugar
             Vector3 dir = aimTarget.position - transform.position;
-            other.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0,currentShot.upForce,0);
+            other.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0, currentShot.upForce, 0);
 
             /*Codigo utilizado para calcular la direccion en la que se encuentra la pelota y asi 
             saber cual animacion vamosa a ejecutar*/
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
                 animator.Play("BackHand");
             }
 
-            ball.GetComponent<Ball>().hitter = "Player";
+            ball.GetComponent<Ball>().hitter = "Player2";
 
             aimTarget.position = aimTargetInitialPosition;
         }
@@ -173,6 +173,7 @@ public class Player : MonoBehaviour
     public void Reset()
     {
         //Resetea la posicion para poder sacar
+
         if (servedRight)
         {
             transform.position = serveLeft.position;

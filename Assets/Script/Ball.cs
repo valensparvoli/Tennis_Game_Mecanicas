@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class Ball : MonoBehaviour
@@ -13,11 +14,18 @@ public class Ball : MonoBehaviour
     //Variables para la puntuacion
     public int playerScore;
     public int botScore;
+    public int player2Score;
+
     [SerializeField] Text playerScoreUI;
     [SerializeField] Text botScoreUI;
+    [SerializeField] Text player2ScoreUI;
+
 
     //Variable que me permite saber si la pelota esta o no en juego
     public bool playing = true;
+
+    //Booleano encargado de sasber el tipo de partida
+    public bool Partida2Player = false;
 
     private void Start()
     {
@@ -25,6 +33,9 @@ public class Ball : MonoBehaviour
         initialPos = transform.position;
         playerScore = 0;
         botScore = 0;
+        player2Score = 0;
+        
+
         //StartCoroutine(Winner());
     }
 
@@ -38,16 +49,24 @@ public class Ball : MonoBehaviour
 
             //Llama la funcion de reset para poder ejecutar el saque
             GameObject.Find("Player").GetComponent<Player>().Reset();
-
+            if (Partida2Player == true)
+            {
+                GameObject.Find("Player2").GetComponent<Player2Script>().Reset();
+            }
+            
             if (playing)
             {
                 if (hitter == "Player")
                 {
                     playerScore++;
                 }
-                else if (hitter == "Bot")
+                if (hitter == "Bot")
                 {
                     botScore++;
+                }
+                if (hitter == "Player2")
+                {
+                    player2Score++;
                 }
                 playing = false; 
             }
@@ -63,7 +82,9 @@ public class Ball : MonoBehaviour
 
             //Preparamos al jugador para que ejecute el saque
             GameObject.Find("Player").GetComponent<Player>().Reset();
-            
+            GameObject.Find("Player2").GetComponent<Player2Script>().Reset();
+
+
             //Registramos quien fue el ultimo en pegarle para poder realizar la suma de puntaje
             if (playing)
             {
@@ -71,9 +92,13 @@ public class Ball : MonoBehaviour
                 {
                     playerScore++;
                 }
-                else if (hitter == "Bot")
+                if (hitter == "Bot")
                 {
                     botScore++;
+                }
+                if (hitter == "Player2")
+                {
+                    player2Score++;
                 }
                 playing = false;
                 updateScore();
@@ -89,9 +114,15 @@ public class Ball : MonoBehaviour
             if (hitter == "Player")
             {
                 playerScore++;
-            }else if (hitter == "Bot")
+
+            }
+            if (hitter == "Bot")
             {
                 botScore++;
+            }
+            if (hitter == "Player2")
+            {
+                player2Score++;
             }
             playing = false;
             updateScore();
@@ -100,19 +131,56 @@ public class Ball : MonoBehaviour
 
     void updateScore()
     {
-        playerScoreUI.text = "Player: " + playerScore;
-        botScoreUI.text = "Bot: " + botScore;   
+        /*
+        if (tipoPartida == "IA")
+        {
+            playerScoreUI.text = "Player: " + playerScore;
+            botScoreUI.text = "Bot: " + botScore;
+        }
+        else if (tipoPartida == "PVSP")
+        {
+            playerScoreUI.text = "Player: " + playerScore;
+            player2ScoreUI.text = "Player2 " + player2Score;
+        }
+        */
+        if (Partida2Player == false)
+        {
+            playerScoreUI.text = "Player: " + playerScore;
+            botScoreUI.text = "Bot: " + botScore;
+        }
+        else 
+        {
+            playerScoreUI.text = "Player: " + playerScore;
+            player2ScoreUI.text = "Player2 " + player2Score;
+        }
     }
 
     void Update()
     {
+        WinCondition();
+    }
+
+    void WinCondition()
+    {
         if (playerScore == 4)
         {
-            Debug.Log("PlayerWin");
+            if (Partida2Player == false)
+            {
+                SceneManager.LoadScene("Player1Win");
+            }
+            else
+            {
+                SceneManager.LoadScene("Player1WinPVP");
+            }
+
         }
-        else if (botScore == 4)
+        if (botScore == 4)
         {
-            Debug.Log("BotWin");
+            SceneManager.LoadScene("IAWin");
+        }
+        if (player2Score == 4)
+        {
+            SceneManager.LoadScene("Player2WinPVP");
         }
     }
 

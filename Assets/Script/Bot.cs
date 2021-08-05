@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bot : MonoBehaviour
 {
-    public float speed=50f;
+    public float speed=45f;
     //float force = 13f;
     Animator animator;
     public Transform ball;
@@ -22,6 +22,7 @@ public class Bot : MonoBehaviour
         targetPosition = transform.position;
         animator = GetComponent<Animator>();
         shotManager = GetComponent<ShotManager>();
+        ball.GetComponent<Ball>().Partida2Player = false;
     }
 
     void Update()
@@ -77,6 +78,8 @@ public class Bot : MonoBehaviour
             }
 
             ball.GetComponent<Ball>().hitter = "Bot";
+
+            
         }
     }
 }
